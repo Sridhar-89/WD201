@@ -17,7 +17,7 @@ fs.readFile("project.html", (err, project) => {
   projectContent = project;
 });
 
-fs.readFile("registration.html", (err, project) => {
+fs.readFile("registration.html", (err, registration) => {
   if (err) {
     throw err;
   }
