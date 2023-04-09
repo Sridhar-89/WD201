@@ -1,11 +1,11 @@
 /* eslint-disable no-undef */
 const todoList = require("../todo");
+const thisDay = new Date();
+const inDay = 60 * 60 * 24 * 1000;
 
 const { all, markAsComplete, add, overdue, dueToday, dueLater } = todoList();
 describe("TodoList Test Suite", () => {
   beforeAll(() => {
-    const thisDay = new Date();
-    const inDay = 60 * 60 * 24 * 1000;
     [
       {
         title: "Buy milk",
@@ -28,27 +28,62 @@ describe("TodoList Test Suite", () => {
       },
     ].forEach(add);
   });
+
   test("Should add new todo", () => {
-    expect(all.length).toBe(3);
+    const todoItemCount = all.length;
     add({
       title: "test todo",
       completed: false,
       dueDate: new Date().toISOString().slice(0, 10),
     });
-    expect(all.length).toBe(4);
+    expect(all.length).toEqual(todoItemCount + 1);
   });
+
   test("Should mark a todo as complete", () => {
-    expect(all[0].completed).toBe(false);
-    markAsComplete(0);
-    expect(all[0].completed).toBe(true);
+    const todoItemCount = all.length;
+    add({
+      title: "test todo completed",
+      completed: false,
+      dueDate: new Date(thisDay.getTime() - 2 * inDay)
+        .toISOString()
+        .slice(0, 10),
+    });
+    expect(all[todoItemCount].completed).toBe(false);
+    markAsComplete(todoItemCount);
+    expect(all[todoItemCount].completed).toBe(true);
   });
+
   test("retrieving overdue items", () => {
-    expect(overdue().length).toBe(1);
+    const overdueItem = overdue().length;
+    add({
+      title: "test overdue",
+      completed: false,
+      dueDate: new Date(thisDay.getTime() - 2 * inDay)
+        .toISOString()
+        .slice(0, 10),
+    });
+    expect(overdue().length).toEqual(overdueItem + 1);
   });
+
   test("retrieving dueToday items", () => {
-    expect(dueToday().length).toBe(2);
+    const dueTodayItem = dueToday().length;
+    add({
+      title: "test dueToday",
+      completed: false,
+      dueDate: new Date().toISOString().slice(0, 10),
+    });
+    expect(dueToday().length).toEqual(dueTodayItem + 1);
   });
+
   test("retrieving dueLater items", () => {
-    expect(dueLater().length).toBe(1);
+    const dueLaterItem = dueLater().length;
+    add({
+      title: "test dueToday",
+      completed: false,
+      dueDate: new Date(thisDay.getTime() + 2 * inDay)
+        .toISOString()
+        .slice(0, 10),
+    });
+    expect(dueLater().length).toEqual(dueLaterItem + 1);
   });
 });
