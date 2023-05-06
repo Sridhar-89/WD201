@@ -19,14 +19,17 @@
           <div class="flex-none">
             <button type="submit" class="bg-green-600 text-white px-5 py-2 rounded font-medium px-5 py-2 ">Add</button>
           </div> 
+         
+           
         </div>
          </form>
+         <%- include('todos.ejs',{title:"Overdue" , data : overduelist,id1:"count-overdue"}) %>
+         <%- include('todos.ejs',{title:"Due Today" , data : duetodaylist,id1:"count-due-today"}) %>
+         <%- include('todos.ejs',{title:"Due Later" , data : duelaterlist,id1:"count-due-later"}) %>
          
          </div>
          </div>
-      <%- include('todos.ejs',{title:"Overdue" , data : overduelist,id1:"count-overdue"}) %>
-      <%- include('todos.ejs',{title:"Due Today" , data : duetodaylist,id1:"count-due-today"}) %>
-      <%- include('todos.ejs',{title:"Due Later" , data : duelaterlist,id1:"count-due-later"}) %>
+      
     </body>
 </html>
  
