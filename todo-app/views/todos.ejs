@@ -10,14 +10,12 @@
     <body>
       <div class="grid grid-cols-6">
         <div class="col-start-3 col-span-2">
-        <div class="flex">
-          <h5 class="px-2">
-            <%= header1 %>
-           </h5>
-           <h5 class="px-2 bg-gray-300 " id='<%=id1 %>'>
-            <%=data.length%>
-           </h5>
-        </div>
+        <h5>
+            <%= title %> <span
+            class="bg-gray-100 text-gray-800 text-sm font-small mr-2 px-2.5 py-0.5 rounded dark:bg-gray-200 dark:text-gray-900 justify-center items-center items">
+            <%= data.length %>
+          </span>
+        </h5>      
          
          <ul class="list-none">
           <% for(var i=0;i<data.length;i++){ %>
