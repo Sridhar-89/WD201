@@ -1,10 +1,15 @@
 const express = require("express");
 const app = express();
+var csrf = require("csurf");
 const path = require("path");
 const { Todo } = require("./models");
+var cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser("shh! some secret string"));
+app.use(csrf({ cookie: true }));
 
 app.set("view engine", "ejs");
 
@@ -20,6 +25,7 @@ app.get("/", async (request, response) => {
       overduelist,
       duetodaylist,
       duelaterlist,
+      csrfToken: request.csrfToken(),
     });
   } else {
     response.json({
