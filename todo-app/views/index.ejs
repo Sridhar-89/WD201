@@ -7,19 +7,21 @@
       <script>
         var token=document.querySelector('meta[name=csrf-token]').getAttribute("content");
         function updateTodo(id){
-          fetch(`/todos/${id}/markAsCompleted`,{
+          const b=document.querySelector(`#todo-checkbox-${id}`).checked
+          fetch(`/todos/${id}`,{
             method: "put",
             headers: { "Content-Type": "application/json"},
             body:JSON.stringify({
-              "_csrf":token
+              "_csrf":token,
+              completed:b
             })
           })
           .then((res) => {
             if(res.ok){
-              window.location.relod();
+              window.location.reload();
             }
           })
-          .catch((err) => console(err));
+          .catch((err) => console.error(err));
         
         }
        function deleteTodo(id){
@@ -45,14 +47,14 @@
       <div class="grid grid-cols-6">
         <div class="col-start-3 col-span-2">
          <%- include('header.ejs')%>
-         <form action="/todos" method="post">
+         <form action="/todos" method="post" onsubmit="validate()">
           <input type="hidden" name="_csrf" value="<%=csrfToken %>" />
           <div class="flex gap-2 py-4">
             <div class="flex-auto">
-              <input type="text"  name="title" placeholder="what's next?" class="border border-gray-300 rounded text-gray-900 text-sm w-full p-2" required/>
+              <input type="text"  pattern ="^[a-z].*$" name="title" placeholder="what's next?" class="border border-gray-300 rounded text-gray-900 text-sm w-full p-2" required/>
             </div>
           <div class="flex-auto">
-            <input type="date" name="dueDate" class="border border-gray-300 rounded text-gray-900 text-medium w-full p-2 leading-4"/>
+            <input type="date" name="dueDate" class="border border-gray-300 rounded text-gray-900 text-medium w-full p-2 leading-4" required/>
           </div>
           <div class="flex-none">
             <button type="submit" class="bg-green-600 text-white px-5 py-2 rounded font-medium px-5 py-2 ">Add</button>
