@@ -47,6 +47,13 @@ module.exports = (sequelize, DataTypes) => {
         order: [["id", "ASC"]],
       });
     }
+    static async remove(id) {
+      return this.destroy({
+        where: {
+          id,
+        },
+      });
+    }
 
     static async dueLater() {
       // FILL IN HERE TO RETURN ITEMS DUE LATER

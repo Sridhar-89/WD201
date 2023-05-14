@@ -16,6 +16,7 @@ app.get("/", async (request, response) => {
 
   if (request.accepts("html")) {
     response.render("index", {
+      title: "Todo application",
       overduelist,
       duetodaylist,
       duelaterlist,
