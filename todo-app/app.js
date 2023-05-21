@@ -164,14 +164,14 @@ app.post("/users", async (request, response) => {
 app.get("/login", (request, response) => {
   response.render("login", { title: "Login", csrfToken: request.csrfToken() });
 });
-// app.post(
-//   "/session",
-//   passport.authenticate("local", { failureRedirect: "/login" }),
-//   (request, response) => {
-//     console.log(request.user);
-//     response.redirect("/todos");
-//   }
-// );
+app.post(
+  "/session",
+  passport.authenticate("local", { failureRedirect: "/login" }),
+  (request, response) => {
+    console.log(request.user);
+    response.redirect("/todos");
+  }
+);
 app.get("/signout", (request, response, next) => {
   request.logout((err) => {
     if (err) {
