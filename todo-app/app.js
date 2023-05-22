@@ -48,6 +48,7 @@ passport.use(
     (username, password, done) => {
       User.findOne({ where: { email: username } })
         .then(async function (user) {
+          console.log("password", user.password);
           const result = await bcrypt.compare(password, user.password);
           if (result) {
             return done(null, user);
@@ -55,8 +56,10 @@ passport.use(
             return done(null, false, { message: "Invalid password" });
           }
         })
+
         .catch((error) => {
-          return done(error);
+          console.log(error);
+          return done(null, false, { message: "Invalid Email-Id" });
         });
     }
   )
@@ -164,14 +167,14 @@ app.post("/users", async (request, response) => {
 app.get("/login", (request, response) => {
   response.render("login", { title: "Login", csrfToken: request.csrfToken() });
 });
-app.post(
-  "/session",
-  passport.authenticate("local", { failureRedirect: "/login" }),
-  (request, response) => {
-    console.log(request.user);
-    response.redirect("/todos");
-  }
-);
+// app.post(
+//   "/session",
+//   passport.authenticate("local", { failureRedirect: "/login" }),
+//   (request, response) => {
+//     console.log(request.user);
+//     response.redirect("/todos");
+//   }
+// );
 app.get("/signout", (request, response, next) => {
   request.logout((err) => {
     if (err) {
@@ -180,17 +183,17 @@ app.get("/signout", (request, response, next) => {
     response.redirect("/");
   });
 });
-// app.post(
-//   "/session",
-//   passport.authenticate("local", {
-//     failureRedirect: "/login",
-//     failureFlash: true,
-//   }),
-//   function (request, response) {
-//     console.log(request.user);
-//     response.redirect("/todos");
-//   }
-// );
+app.post(
+  "/session",
+  passport.authenticate("local", {
+    failureRedirect: "/login",
+    failureFlash: true,
+  }),
+  function (request, response) {
+    console.log(request.user);
+    response.redirect("/todos");
+  }
+);
 
 // app.get("/todos", connectEnsureLogin.ensureLoggedIn(),async function (_request, response) {
 //   console.log("Processing list of all Todos ...");

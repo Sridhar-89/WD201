@@ -115,10 +115,6 @@ module.exports = (sequelize, DataTypes) => {
       title: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-          notNull: true,
-          len: 5,
-        },
       },
       dueDate: {
         type: DataTypes.DATEONLY,
