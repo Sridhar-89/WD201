@@ -180,17 +180,17 @@ app.get("/signout", (request, response, next) => {
     response.redirect("/");
   });
 });
-app.post(
-  "/session",
-  passport.authenticate("local", {
-    failureRedirect: "/login",
-    failureFlash: true,
-  }),
-  function (request, response) {
-    console.log(request.user);
-    response.redirect("/todos");
-  }
-);
+// app.post(
+//   "/session",
+//   passport.authenticate("local", {
+//     failureRedirect: "/login",
+//     failureFlash: true,
+//   }),
+//   function (request, response) {
+//     console.log(request.user);
+//     response.redirect("/todos");
+//   }
+// );
 
 // app.get("/todos", connectEnsureLogin.ensureLoggedIn(),async function (_request, response) {
 //   console.log("Processing list of all Todos ...");
