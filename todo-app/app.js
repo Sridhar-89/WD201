@@ -160,7 +160,7 @@ app.post("/users", async (request, response) => {
       if (err) {
         console.log(err);
       }
-      response.redirect("/login");
+      response.redirect("/todos");
     });
   } catch (error) {
     console.log(error);
