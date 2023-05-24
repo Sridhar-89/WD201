@@ -89,7 +89,7 @@ app.get(
   "/todos",
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
-    //const allTodos = await Todo.getTodos();
+    //const allTodos = await Todo.getTodos(loggedInUser);
     const loggedInUser = request.user.id;
     //console.log("id is ",loggedInUser);
     const overduelist = await Todo.overdue(loggedInUser);
@@ -100,6 +100,7 @@ app.get(
     if (request.accepts("html")) {
       response.render("todo", {
         title: "Todo application",
+        //allTodos,
         overduelist,
         duetodaylist,
         duelaterlist,
@@ -108,6 +109,7 @@ app.get(
       });
     } else {
       response.json({
+        //allTodos,
         overduelist,
         duetodaylist,
         duelaterlist,
@@ -158,10 +160,12 @@ app.post("/users", async (request, response) => {
       if (err) {
         console.log(err);
       }
-      response.redirect("/todos");
+      response.redirect("/login");
     });
   } catch (error) {
     console.log(error);
+    request.flash("error", error.message);
+    return response.redirect("/signup");
   }
 });
 app.get("/login", (request, response) => {
@@ -195,21 +199,25 @@ app.post(
   }
 );
 
-// app.get("/todos", connectEnsureLogin.ensureLoggedIn(),async function (_request, response) {
-//   console.log("Processing list of all Todos ...");
-//   // FILL IN YOUR CODE HERE
+app.get(
+  "/todos",
+  connectEnsureLogin.ensureLoggedIn(),
+  async function (_request, response) {
+    console.log("Processing list of all Todos ...");
+    // FILL IN YOUR CODE HERE
 
-//   // First, we have to query our PostgerSQL database using Sequelize to get list of all Todos.
-//   // Then, we have to respond with all Todos, like:
-//   // response.send(todos)
-//   try {
-//     const todo = await Todo.findAll();
-//     return response.json(todo);
-//   } catch (error) {
-//     console.log(error);
-//     return response.status(422).json(error);
-//   }
-// });
+    // First, we have to query our PostgerSQL database using Sequelize to get list of all Todos.
+    // Then, we have to respond with all Todos, like:
+    // response.send(todos)
+    try {
+      const todo = await Todo.findAll();
+      return response.json(todo);
+    } catch (error) {
+      console.log(error);
+      return response.status(422).json(error);
+    }
+  }
+);
 
 // app.get("/todos/:id", connectEnsureLogin.ensureLoggedIn(),async function (request, response) {
 //   try {
